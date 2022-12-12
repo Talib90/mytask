@@ -35,12 +35,13 @@ module.exports = {
 
       var token = await createJwt(jwtAtt);
       // done create token
-
+//console.log(token);
       var data = {
         id: login.id,
         fullname: login.fullname,
         username: login.username,
         email: login.email,
+        amount: login.amount,
         token: token,
       };
 

@@ -8,8 +8,7 @@ var md5 = require('md5');
 module.exports = {
   //-------------------------------------------- Create User ---------------------------------------------------//
   async createUsers(request, reply) {
-    const { username, password, fullname, email } = request.body;
-
+    const { username, password, fullname, email, refid } = request.body;
     if (!username) {
       throw Error("Username is required");
     }
@@ -22,6 +21,8 @@ module.exports = {
       throw Error("Password is required");
     }
 
+
+
     var findUser = await userTable.findOne({
       where: {
         username: username,
@@ -33,7 +34,9 @@ module.exports = {
         email: email,
       },
     });
-    
+
+
+
 
     if (findUser) {
       throw Error("Username already exist");
@@ -41,17 +44,47 @@ module.exports = {
       throw Error("Email already exist");
     } else {
       // get id number
-      var countUser = await userTable.count({});
-
       var encPass = md5(password)
 
       var createUser = await userTable.create({
-        id: Number(countUser + 1),
         username: username,
         password: encPass,
         fullname: fullname,
         email: email,
       });
+      const refId = ('REF0000' + createUser.id);
+      var updateString = {};
+      updateString["refid"] = refId;
+      updateString["amount"] = 0;
+      userTable.update(updateString, {
+        where: {
+          username: username,
+        },
+      }).catch((err) => {
+        res.status(500).send({ message: err.message });
+      });
+
+      if (refid) {
+        var findRefid = await userTable.findOne({
+          where: {
+            refid: refid,
+          },
+        });
+
+        if (findRefid) {
+          var updateString = {};
+
+          updateString["amount"] = findRefid.amount + 25;
+          userTable.update(updateString, {
+            where: {
+              refid: refid,
+            },
+          }).catch((err) => {
+            res.status(500).send({ message: err.message });
+          });
+
+        }
+      }
 
       return createUser;
     }
@@ -88,4 +121,12 @@ module.exports = {
     return listUser
   },
   //-------------------------------------------- Get User ---------------------------------------------------//
+
+  //-------------------------------------------- Get User List---------------------------------------------------//
+  async getListUsers(request, reply) {
+    var listUser = await userTable.findAll()
+    return listUser
+  },
+  //-------------------------------------------- Get User List---------------------------------------------------//
+
 };

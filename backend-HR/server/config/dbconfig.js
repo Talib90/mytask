@@ -1,14 +1,12 @@
 const Pool = require("pg").Pool;
 
-
-
 module.exports = {
-  HOST: "127.0.0.1",
-  USER: "postgres",
-  PASSWORD: "root",
-  DB: "human_resource",
-  PORT: 5432,
-  dialect: "postgres",
+  HOST: "localhost",
+  USER: "root",
+  PASSWORD: "",
+  DB: "tekkis_system",
+  PORT: 3306,
+  dialect: "mysql",
   pool: {
     max: 5,
     min: 0,
@@ -16,4 +14,3 @@ module.exports = {
     idle: 10000,
   },
 };
-

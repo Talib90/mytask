@@ -20,7 +20,8 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.user = require("./UserModel")(sequelize, Sequelize);
-db.staff = require("./Staff")(sequelize, Sequelize);
+db.staff = require("./StaffModel")(sequelize, Sequelize);
+db.payment = require("./PaymentModel")(sequelize, Sequelize);
 
 
 db.sequelize.sync();

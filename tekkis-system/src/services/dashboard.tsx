@@ -6,7 +6,7 @@ import { createStaffModel } from "../model/dashboard/create_staff_model";
 
 
 class DashboarService {
-    
+
     createStaff = async (staff: createStaffModel) => {
         return await axios
             .post(app.api_endpoint + 'staff/createStaff', {
@@ -24,7 +24,7 @@ class DashboarService {
     };
     getStaff = async (name: String, position: String) => {
         var defaults = "";
-        
+
         if (name) {
             defaults = "?name=" + name
         }
@@ -43,6 +43,16 @@ class DashboarService {
                 return error.response.data;
             });
     };
+    getUserList = async () => {
+        return await axios
+            .get(app.api_endpoint + 'user/getListUser')
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (error) {
+                return error.response.data;
+            });
+    }
 }
 
 

@@ -2,7 +2,6 @@ import React, { Component, useState } from 'react';
 import styles from "../../style";
 import { Provider } from 'react-redux';
 import AuthService from '../../services/auth';
-import { LoginModel } from '../../model/auth/login_model';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
@@ -10,45 +9,40 @@ import { useNavigate } from 'react-router-dom';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
-
 const initialStates = {
     username: "",
-    password: ""
+    password: "",
+    fullname: "",
+    email: "",
+    refid: ""
 }
 
-const Login = () => {
+const Register = () => {
     const [formValue, setFormValue] = useState(initialStates);
-    const navigate = useNavigate()
-    const { username, password } = formValue;
+    const { username, password, fullname, email, refid } = formValue;
     const handleChange = (e: any) => {
         setFormValue({ ...formValue, [e.target.name]: e.target.value })
     };
-    const handleLogin = async () => {
-
-        if (username && password) {
+    const handleRegister = async () => {
+        if (username && password && fullname && email) {
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn bg-primary',
                 },
                 buttonsStyling: false
             })
-            const res = await AuthService.login({ username, password });
+            const res = await AuthService.register({ username, password,fullname,email,refid });
             if (res.status == 200) {
                 swalWithBootstrapButtons.fire({
-                    title: 'Successful Login',
-                    text: 'Do you want to continue',
+                    title: 'Successful Register',
+                   // text: 'Do you want to continue',
                     icon: 'success',
                     confirmButtonText: 'Okey'
                 }).then((result) => {
-                    if (result.isConfirmed) {
-                        localStorage.setItem("fullname", res.data.fullname);
-                        localStorage.setItem("is_login", JSON.stringify(true));
-                        navigate('/dashboard');
-                    }
                 })
             } else {
                 swalWithBootstrapButtons.fire({
-                    title: 'Failed Login',
+                    title: 'Failed Register',
                     text: res.message,
                     icon: 'error',
                     confirmButtonText: 'Okey'
@@ -77,8 +71,8 @@ const Login = () => {
                     <div className="flex content-center items-center justify-center h-full">
                         <div className="w-full lg:w-4/12 px-4">
                             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
-                                <div className="rounded-t mb-0 px-6 py-6">
-                                    <img src="src/assets/images/HRM-Logo-FINAL.png" />
+                                <div className="rounded-t mb-0 px-6 py-6 ">
+                                    <img src="https://www.tekkis.com.my/img/tekkis-logo.76627b26.png" style={{ width: "100px" }} />
                                 </div>
                                 <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                                     <form>
@@ -87,7 +81,25 @@ const Login = () => {
                                                 className="block uppercase text-gray-700 text-xs font-bold mb-2"
                                                 htmlFor="grid-password"
                                             >
-                                                Email / Username
+                                                Full Name
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="fullname"
+                                                value={fullname}
+                                                onChange={handleChange}
+                                                className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                                                placeholder="Full Name"
+                                                style={{ transition: "all .15s ease" }}
+                                            />
+                                        </div>
+
+                                        <div className="relative w-full mb-3">
+                                            <label
+                                                className="block uppercase text-gray-700 text-xs font-bold mb-2"
+                                                htmlFor="grid-password"
+                                            >
+                                                Username
                                             </label>
                                             <input
                                                 type="text"
@@ -95,7 +107,25 @@ const Login = () => {
                                                 value={username}
                                                 onChange={handleChange}
                                                 className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                                                placeholder="Email / Username"
+                                                placeholder="Username"
+                                                style={{ transition: "all .15s ease" }}
+                                            />
+                                        </div>
+
+                                        <div className="relative w-full mb-3">
+                                            <label
+                                                className="block uppercase text-gray-700 text-xs font-bold mb-2"
+                                                htmlFor="grid-password"
+                                            >
+                                                Email
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="email"
+                                                value={email}
+                                                onChange={handleChange}
+                                                className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                                                placeholder="Email"
                                                 style={{ transition: "all .15s ease" }}
                                             />
                                         </div>
@@ -118,20 +148,41 @@ const Login = () => {
                                             />
                                         </div>
 
+                                        <div className="relative w-full mb-3">
+                                            <label
+                                                className="block uppercase text-gray-700 text-xs font-bold mb-2"
+                                                htmlFor="grid-password"
+                                            >
+                                                Ref Id
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="refid"
+                                                value={refid}
+                                                onChange={handleChange}
+                                                className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                                                placeholder="Ref Id"
+                                                style={{ transition: "all .15s ease" }}
+                                            />
+                                        </div>
                                         <div className="text-center mt-6">
                                             <button
                                                 className="bg-primary text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
                                                 type="button"
                                                 style={{ transition: "all .15s ease" }}
 
-                                                onClick={() => handleLogin()}
+                                                onClick={() => handleRegister()}
                                             >
-                                                Sign In
+                                                Sign Up
                                             </button>
                                             <ToastContainer />
                                         </div>
                                     </form>
+                                    <div className="px-3 py-3 text-center">
+                                        <a href='/'>Go to Login Page</a>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -140,4 +191,5 @@ const Login = () => {
         </main>
     </>)
 }
-export default Login;
+
+export default Register;

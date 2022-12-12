@@ -27,12 +27,12 @@ module.exports = {
     }
   },
 
-  updateUser: async (req, res) => {
+  getListUser: async (req, res) => {
     try {
-      var users = await UserService.updateUsers(req, res);
+      var users = await UserService.getListUsers(req, res);
       return res.status(200).json({
         status: 200,
-        message: "Succesfully Update User",
+        message: "Succesfully Retrieved User",
         data: users,
       });
     } catch (e) {

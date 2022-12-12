@@ -4,11 +4,10 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-const controller = require("../controllers/AuthController");
+const controller = require("../controllers/PaymentController");
 
-router.post("/Login", (req, res) => {
-  controller.login(req, res);
+router.post("/makePayment", (req, res) => {
+    controller.makePayment(req, res);
 });
-
 
 module.exports = router;

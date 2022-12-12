@@ -14,8 +14,9 @@ router.get("/getUser", (req, res) => {
   controller.getUser(req, res);
 });
 
-router.post("/updateUser", (req, res) => {
-  controller.updateUser(req, res);
+router.get("/getListUser", (req, res) => {
+  controller.getListUser(req, res);
 });
+
 
 module.exports = router;

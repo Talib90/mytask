@@ -17,6 +17,12 @@ module.exports = (sequelize, Sequelize) => {
     fullname: {
       type: Sequelize.STRING,
     },
+    amount: {
+      type: Sequelize.FLOAT,
+    },
+    refid: {
+      type: Sequelize.STRING,
+    },
     createdAt: {
       type: Sequelize.DATE,
     },
